@@ -143,10 +143,10 @@ section{padding:120px 64px;position:relative;z-index:1;}
 /* AVANT/APRÈS — colonne unique, centré, taille compacte */
 .ba-section-title{font-family:'Bebas Neue',sans-serif;font-size:18px;letter-spacing:3px;color:var(--muted);margin-bottom:1.5rem;display:flex;align-items:center;gap:12px;}
 .ba-section-title::after{content:'';flex:1;height:1px;background:var(--line);}
-.ba-grid{display:flex;flex-direction:column;gap:32px;margin-bottom:4px;}
+.ba-grid{display:flex;flex-direction:column;gap:24px;margin-bottom:4px;align-items:center;}
 
-/* chaque item BA : pleine largeur de la section */
-.ba-item{width:100%;}
+/* chaque item BA : centré, taille modérée */
+.ba-item{width:100%;max-width:520px;}
 
 /* BA SLIDER — hauteur naturelle, zéro crop */
 .ba-wrap{
@@ -200,7 +200,14 @@ section{padding:120px 64px;position:relative;z-index:1;}
 .lb-ba-inner{
   position:relative;
   width:90vw;
-  max-width:900px;
+  max-width:780px;
+}
+/* image après dans la lightbox : hauteur max pour ne pas déborder */
+.lb-ba-inner .ba-after{
+  max-height:75vh;
+  width:100%;
+  height:auto;
+  object-fit:contain;
 }
 /* slider dans la lightbox */
 .lb-ba-inner .ba-wrap{cursor:ew-resize;}
@@ -664,7 +671,6 @@ footer{background:var(--panel);padding:72px 64px 36px;border-top:1px solid var(-
       </div>
       <div class="ba-caption">Plafond contemporain — De chantier à finition</div>
     </div>
-
   </div>
 
   <!-- GALERIE -->
@@ -693,11 +699,6 @@ footer{background:var(--panel);padding:72px 64px 36px;border-top:1px solid var(-
     <div class="real-item" data-index="4">
       <img src="images/plafond rectangle.jpg" alt="Plafond rectangle" loading="lazy">
       <div class="real-label">Plafond rectangle</div>
-      <div class="real-zoom">⤢</div>
-    </div>
-    <div class="real-item" data-index="5">
-      <img src="images/concept-store.jpg" alt="Concept store" loading="lazy">
-      <div class="real-label">Concept store</div>
       <div class="real-zoom">⤢</div>
     </div>
     <div class="real-item" data-index="7">
