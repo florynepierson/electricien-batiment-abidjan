@@ -153,8 +153,8 @@ section{padding:120px 64px;position:relative;z-index:1;}
 .ba-divider{position:absolute;top:0;bottom:0;left:50%;width:2px;background:var(--gold);transform:translateX(-50%);pointer-events:none;z-index:2;transition:left 0.05s linear;}
 .ba-handle{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:48px;height:48px;background:var(--gold);border-radius:50%;display:flex;align-items:center;justify-content:center;z-index:3;pointer-events:none;box-shadow:0 0 0 6px rgba(212,168,67,0.2),0 2px 12px rgba(0,0,0,0.4);transition:left 0.05s linear;}
 .ba-handle svg{width:20px;height:20px;fill:var(--ink);}
-/* 3ème slider avant/après centré sur toute la largeur */
-.ba-grid > *:nth-child(3){
+/* dernier slider avant/après seul sur sa ligne : centré et pas trop large */
+.ba-grid > *:last-child:nth-child(odd){
   grid-column:1 / -1;
   max-width:700px;
   margin:0 auto;
@@ -568,7 +568,55 @@ footer{background:var(--panel);padding:72px 64px 36px;border-top:1px solid var(-
         <span class="ba-badge avant">Avant</span>
         <span class="ba-badge apres">Après</span>
       </div>
-      <div class="ba-caption">Luminaire — Installation & finition</div>
+      <div class="ba-caption">Luminaire — Installation &amp; finition</div>
+    </div>
+
+    <div>
+      <div class="ba-wrap" data-ba>
+        <img class="ba-after" src="images/cuisine-ouverte.jpg" alt="Cuisine ouverte après" />
+        <div class="ba-before-clip"><img src="images/cuisine-avant.jpg" alt="Cuisine avant" /></div>
+        <div class="ba-divider"></div>
+        <div class="ba-handle"><svg viewBox="0 0 24 24"><path d="M8 5l-7 7 7 7V5zm8 0v14l7-7-7-7z"/></svg></div>
+        <span class="ba-badge avant">Avant</span>
+        <span class="ba-badge apres">Après</span>
+      </div>
+      <div class="ba-caption">Cuisine ouverte — Rénovation complète</div>
+    </div>
+
+    <div>
+      <div class="ba-wrap" data-ba>
+        <img class="ba-after" src="images/cuisine-ouverte.jpg" alt="Cuisine après" />
+        <div class="ba-before-clip"><img src="images/cuisine-ouverte-travaux.jpg" alt="Cuisine en travaux" /></div>
+        <div class="ba-divider"></div>
+        <div class="ba-handle"><svg viewBox="0 0 24 24"><path d="M8 5l-7 7 7 7V5zm8 0v14l7-7-7-7z"/></svg></div>
+        <span class="ba-badge avant">Travaux</span>
+        <span class="ba-badge apres">Résultat</span>
+      </div>
+      <div class="ba-caption">Cuisine — En cours vs. résultat final</div>
+    </div>
+
+    <div>
+      <div class="ba-wrap" data-ba>
+        <img class="ba-after" src="images/plafond-contemporain.jpg" alt="Plafond contemporain après" />
+        <div class="ba-before-clip"><img src="images/plafond-contemporain-travaux.jpg" alt="Plafond contemporain en travaux" /></div>
+        <div class="ba-divider"></div>
+        <div class="ba-handle"><svg viewBox="0 0 24 24"><path d="M8 5l-7 7 7 7V5zm8 0v14l7-7-7-7z"/></svg></div>
+        <span class="ba-badge avant">Travaux</span>
+        <span class="ba-badge apres">Résultat</span>
+      </div>
+      <div class="ba-caption">Plafond contemporain — De chantier à finition</div>
+    </div>
+
+    <div>
+      <div class="ba-wrap" data-ba>
+        <img class="ba-after" src="images/tv-travaux-apres.jpg" alt="TV après" />
+        <div class="ba-before-clip"><img src="images/tv-travaux.jpg" alt="TV en travaux" /></div>
+        <div class="ba-divider"></div>
+        <div class="ba-handle"><svg viewBox="0 0 24 24"><path d="M8 5l-7 7 7 7V5zm8 0v14l7-7-7-7z"/></svg></div>
+        <span class="ba-badge avant">Travaux</span>
+        <span class="ba-badge apres">Résultat</span>
+      </div>
+      <div class="ba-caption">Meuble TV — Habillage &amp; éclairage</div>
     </div>
 
   </div>
@@ -576,7 +624,7 @@ footer{background:var(--panel);padding:72px 64px 36px;border-top:1px solid var(-
   <!-- GALERIE -->
   <div class="ba-section-title reveal" style="margin-top:64px;">Galerie réalisations</div>
   <div class="real-grid reveal">
-  <div class="real-item" data-index="0">
+    <div class="real-item" data-index="0">
       <img src="images/plafond.jpg" alt="Plafond lumineux" loading="lazy">
       <div class="real-label">Plafond lumineux</div>
       <div class="real-zoom">⤢</div>
@@ -604,6 +652,66 @@ footer{background:var(--panel);padding:72px 64px 36px;border-top:1px solid var(-
     <div class="real-item" data-index="5">
       <img src="images/concept-store.jpg" alt="Concept store" loading="lazy">
       <div class="real-label">Concept store</div>
+      <div class="real-zoom">⤢</div>
+    </div>
+    <div class="real-item" data-index="6">
+      <img src="images/applique.jpg" alt="Applique murale" loading="lazy">
+      <div class="real-label">Applique murale</div>
+      <div class="real-zoom">⤢</div>
+    </div>
+    <div class="real-item" data-index="7">
+      <img src="images/coeur.jpg" alt="Éclairage cœur" loading="lazy">
+      <div class="real-label">Décoration lumineuse</div>
+      <div class="real-zoom">⤢</div>
+    </div>
+    <div class="real-item" data-index="8">
+      <img src="images/couleurs.jpg" alt="Éclairage couleurs" loading="lazy">
+      <div class="real-label">Éclairage coloré</div>
+      <div class="real-zoom">⤢</div>
+    </div>
+    <div class="real-item" data-index="9">
+      <img src="images/couloir.jpg" alt="Couloir éclairé" loading="lazy">
+      <div class="real-label">Couloir</div>
+      <div class="real-zoom">⤢</div>
+    </div>
+    <div class="real-item" data-index="10">
+      <img src="images/lustre-cristal.jpg" alt="Lustre cristal" loading="lazy">
+      <div class="real-label">Lustre cristal</div>
+      <div class="real-zoom">⤢</div>
+    </div>
+    <div class="real-item" data-index="11">
+      <img src="images/piscine.jpg" alt="Éclairage piscine" loading="lazy">
+      <div class="real-label">Éclairage piscine</div>
+      <div class="real-zoom">⤢</div>
+    </div>
+    <div class="real-item" data-index="12">
+      <img src="images/piscine2.jpg" alt="Éclairage piscine 2" loading="lazy">
+      <div class="real-label">Piscine — vue 2</div>
+      <div class="real-zoom">⤢</div>
+    </div>
+    <div class="real-item" data-index="13">
+      <img src="images/salon-lustre.jpg" alt="Salon lustre" loading="lazy">
+      <div class="real-label">Salon avec lustre</div>
+      <div class="real-zoom">⤢</div>
+    </div>
+    <div class="real-item" data-index="14">
+      <img src="images/tv.jpg" alt="Meuble TV" loading="lazy">
+      <div class="real-label">Meuble TV</div>
+      <div class="real-zoom">⤢</div>
+    </div>
+    <div class="real-item" data-index="15">
+      <img src="images/séjour.jpg" alt="Séjour" loading="lazy">
+      <div class="real-label">Séjour</div>
+      <div class="real-zoom">⤢</div>
+    </div>
+    <div class="real-item" data-index="16">
+      <img src="images/plafond-contemporain.jpg" alt="Plafond contemporain" loading="lazy">
+      <div class="real-label">Plafond contemporain</div>
+      <div class="real-zoom">⤢</div>
+    </div>
+    <div class="real-item" data-index="17">
+      <img src="images/cuisine-ouverte.jpg" alt="Cuisine ouverte" loading="lazy">
+      <div class="real-label">Cuisine ouverte</div>
       <div class="real-zoom">⤢</div>
     </div>
   </div>
@@ -955,6 +1063,18 @@ const galleryImages=[
   {src:'images/plafond octogones.jpg',label:'Plafond octogones'},
   {src:'images/plafond rectangle.jpg',label:'Plafond rectangle'},
   {src:'images/concept-store.jpg',label:'Concept store'},
+  {src:'images/applique.jpg',label:'Applique murale'},
+  {src:'images/coeur.jpg',label:'Décoration lumineuse'},
+  {src:'images/couleurs.jpg',label:'Éclairage coloré'},
+  {src:'images/couloir.jpg',label:'Couloir'},
+  {src:'images/lustre-cristal.jpg',label:'Lustre cristal'},
+  {src:'images/piscine.jpg',label:'Éclairage piscine'},
+  {src:'images/piscine2.jpg',label:'Piscine — vue 2'},
+  {src:'images/salon-lustre.jpg',label:'Salon avec lustre'},
+  {src:'images/tv.jpg',label:'Meuble TV'},
+  {src:'images/séjour.jpg',label:'Séjour'},
+  {src:'images/plafond-contemporain.jpg',label:'Plafond contemporain'},
+  {src:'images/cuisine-ouverte.jpg',label:'Cuisine ouverte'},
 ];
 const lightbox=document.getElementById('lightbox');
 const lbImg=document.getElementById('lbImg');
