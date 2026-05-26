@@ -1,0 +1,901 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Gildas Hounkponou – Chef Électricien Bâtiment Abidjan</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Outfit:wght@200;300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --gold: #D4A843;
+  --gold-dim: #A8852F;
+  --gold-glow: rgba(212,168,67,0.18);
+  --ink: #080B0A;
+  --deep: #0C0F0D;
+  --panel: #101410;
+  --card: #141A14;
+  --line: rgba(212,168,67,0.12);
+  --muted: #6B7A6B;
+  --light: #C8D4C0;
+  --white: #EEF4EC;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{font-family:'Outfit',sans-serif;background:var(--ink);color:var(--light);overflow-x:hidden;}
+
+/* CIRCUIT BG */
+.circuit-bg{position:fixed;inset:0;pointer-events:none;z-index:0;opacity:0.035;
+  background-image:linear-gradient(var(--gold) 1px,transparent 1px),linear-gradient(90deg,var(--gold) 1px,transparent 1px);
+  background-size:70px 70px;}
+.circuit-bg::after{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 80% 60% at 50% 0%,transparent 40%,var(--ink) 100%);}
+
+/* ANIMATIONS */
+@keyframes glowPulse{0%,100%{box-shadow:0 0 20px var(--gold-glow);}50%{box-shadow:0 0 50px rgba(212,168,67,0.35),0 0 100px rgba(212,168,67,0.12);}}
+@keyframes blink{0%,100%{opacity:1;}50%{opacity:0.2;}}
+@keyframes fadeUp{from{opacity:0;transform:translateY(36px);}to{opacity:1;transform:translateY(0);}}
+@keyframes ticker{0%{transform:translateX(0);}100%{transform:translateX(-50%);}}
+@keyframes scanline{0%{top:-4px;}100%{top:100%;}}
+@keyframes pulse{0%{transform:scale(1);opacity:0.7;}100%{transform:scale(2.3);opacity:0;}}
+
+/* TICKER */
+.ticker{background:var(--gold);color:var(--ink);font-size:11px;font-weight:600;letter-spacing:3px;text-transform:uppercase;padding:9px 0;overflow:hidden;position:relative;z-index:999;}
+.ticker-inner{display:flex;white-space:nowrap;animation:ticker 35s linear infinite;width:max-content;}
+.ticker-item{padding:0 60px;display:flex;align-items:center;gap:14px;}
+.ticker-item::before{content:'⚡';}
+
+/* NAV */
+nav{position:fixed;top:0;width:100%;z-index:1000;padding:22px 64px;display:flex;justify-content:space-between;align-items:center;transition:all 0.4s;}
+nav.scrolled{background:rgba(8,11,10,0.96);padding:14px 64px;backdrop-filter:blur(16px);border-bottom:1px solid var(--line);}
+.logo-wrap{display:flex;align-items:center;gap:12px;text-decoration:none;}
+.logo-bolt{width:34px;height:34px;background:var(--gold);clip-path:polygon(60% 0%,100% 0%,40% 50%,80% 50%,0% 100%,30% 55%,0% 55%);animation:glowPulse 3s ease-in-out infinite;flex-shrink:0;}
+.logo-text{font-family:'Bebas Neue',sans-serif;font-size:22px;letter-spacing:3px;color:var(--white);line-height:1;}
+.logo-text span{color:var(--gold);}
+.nav-links{display:flex;align-items:center;gap:36px;list-style:none;}
+.nav-links a{text-decoration:none;color:var(--muted);font-size:12px;letter-spacing:2px;text-transform:uppercase;font-weight:400;transition:color 0.3s;}
+.nav-links a:hover{color:var(--gold);}
+.nav-cta{background:var(--gold);color:var(--ink)!important;padding:10px 22px;font-weight:600!important;letter-spacing:1px!important;font-size:12px!important;clip-path:polygon(6px 0%,100% 0%,calc(100% - 6px) 100%,0% 100%);transition:all 0.3s!important;}
+.nav-cta:hover{background:var(--white)!important;}
+
+/* BURGER */
+.burger-btn{display:none;flex-direction:column;gap:5px;background:none;border:none;cursor:pointer;padding:4px;}
+.burger-btn span{width:24px;height:2px;background:var(--light);transition:all 0.3s;display:block;}
+.burger-btn.open span:nth-child(1){transform:translateY(7px) rotate(45deg);}
+.burger-btn.open span:nth-child(2){opacity:0;}
+.burger-btn.open span:nth-child(3){transform:translateY(-7px) rotate(-45deg);}
+
+/* HERO */
+#hero{min-height:100vh;position:relative;display:flex;align-items:center;overflow:hidden;padding-top:100px;}
+.hero-bg{position:absolute;inset:0;z-index:0;}
+.hero-bg img{width:100%;height:100%;object-fit:cover;opacity:0.15;filter:saturate(0.3) contrast(1.3);}
+.hero-bg::after{content:'';position:absolute;inset:0;background:linear-gradient(to right,rgba(8,11,10,1) 30%,rgba(8,11,10,0.3) 70%,rgba(8,11,10,0.05) 100%),linear-gradient(to top,var(--ink) 0%,transparent 40%);}
+.hero-bg::before{content:'';position:absolute;left:0;right:0;height:3px;background:linear-gradient(to right,transparent,var(--gold-glow),transparent);z-index:2;animation:scanline 9s linear infinite;}
+.hero-content{position:relative;z-index:2;padding:0 64px;max-width:780px;}
+.hero-status{display:inline-flex;align-items:center;gap:10px;background:rgba(212,168,67,0.07);border:1px solid var(--line);padding:8px 18px;margin-bottom:32px;font-size:11px;letter-spacing:3px;text-transform:uppercase;color:var(--gold);font-weight:500;opacity:0;animation:fadeUp 0.8s ease 0.3s forwards;}
+.status-dot{width:8px;height:8px;border-radius:50%;background:#4ADE80;box-shadow:0 0 8px #4ADE80;animation:blink 1.5s ease-in-out infinite;flex-shrink:0;}
+.hero-title{font-family:'Bebas Neue',sans-serif;font-size:clamp(70px,9vw,128px);line-height:0.9;letter-spacing:2px;color:var(--white);opacity:0;animation:fadeUp 0.8s ease 0.6s forwards;}
+.hero-title .gold{color:var(--gold);text-shadow:0 0 40px rgba(212,168,67,0.35);}
+.hero-sub{font-size:15px;font-weight:300;color:var(--muted);line-height:1.8;margin-top:24px;max-width:460px;opacity:0;animation:fadeUp 0.8s ease 0.9s forwards;}
+.hero-badges{display:flex;gap:14px;margin-top:32px;opacity:0;animation:fadeUp 0.8s ease 1.1s forwards;flex-wrap:wrap;}
+.badge{display:flex;align-items:center;gap:8px;font-size:12px;font-weight:400;color:var(--muted);padding:8px 16px;border:1px solid rgba(107,122,107,0.25);letter-spacing:0.5px;}
+.badge span{color:var(--gold);}
+.hero-ctas{display:flex;gap:16px;margin-top:40px;opacity:0;animation:fadeUp 0.8s ease 1.3s forwards;}
+.btn-gold{background:var(--gold);color:var(--ink);padding:16px 36px;font-size:12px;letter-spacing:2px;text-transform:uppercase;font-weight:600;border:none;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;gap:10px;clip-path:polygon(8px 0%,100% 0%,calc(100% - 8px) 100%,0% 100%);transition:all 0.3s;position:relative;overflow:hidden;}
+.btn-gold::before{content:'';position:absolute;top:0;left:-100%;width:100%;height:100%;background:rgba(255,255,255,0.2);transition:left 0.3s;}
+.btn-gold:hover::before{left:100%;}
+.btn-gold:hover{background:var(--white);}
+.btn-ghost{background:transparent;color:var(--light);padding:16px 36px;font-size:12px;letter-spacing:2px;text-transform:uppercase;font-weight:400;border:1px solid rgba(200,212,192,0.2);cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;gap:10px;transition:all 0.3s;}
+.btn-ghost:hover{border-color:var(--gold);color:var(--gold);}
+
+/* STATS STRIP */
+.stats-strip{background:var(--panel);border-top:1px solid var(--line);border-bottom:1px solid var(--line);display:grid;grid-template-columns:repeat(4,1fr);position:relative;z-index:1;}
+.stat-block{padding:44px 40px;border-right:1px solid var(--line);display:flex;flex-direction:column;align-items:center;gap:4px;opacity:0;transform:translateY(16px);transition:all 0.6s ease;}
+.stat-block:last-child{border-right:none;}
+.stat-block.visible{opacity:1;transform:translateY(0);}
+.stat-n{font-family:'Bebas Neue',sans-serif;font-size:56px;color:var(--gold);line-height:1;letter-spacing:2px;text-shadow:0 0 30px rgba(212,168,67,0.25);}
+.stat-l{font-size:11px;letter-spacing:3px;text-transform:uppercase;color:var(--muted);font-weight:300;text-align:center;}
+.stat-placeholder{font-family:'Bebas Neue',sans-serif;font-size:28px;color:rgba(212,168,67,0.3);line-height:1;letter-spacing:1px;}
+
+/* SECTION BASE */
+section{padding:120px 64px;position:relative;z-index:1;}
+.eyebrow{font-size:10px;letter-spacing:5px;text-transform:uppercase;color:var(--gold);font-weight:500;margin-bottom:14px;display:flex;align-items:center;gap:12px;}
+.eyebrow::before{content:'';width:28px;height:1px;background:var(--gold);flex-shrink:0;}
+.section-title{font-family:'Bebas Neue',sans-serif;font-size:clamp(44px,5vw,72px);line-height:0.95;letter-spacing:2px;color:var(--white);}
+.section-title .gold{color:var(--gold);}
+.reveal{opacity:0;transform:translateY(32px);transition:opacity 0.7s ease,transform 0.7s ease;}
+.reveal.visible{opacity:1;transform:translateY(0);}
+
+/* PLACEHOLDER INFO */
+.placeholder-tag{display:inline-block;background:rgba(212,168,67,0.08);border:1px dashed rgba(212,168,67,0.35);color:rgba(212,168,67,0.6);font-size:10px;letter-spacing:1.5px;text-transform:uppercase;padding:3px 10px;font-family:'Outfit',sans-serif;font-weight:400;}
+
+/* SERVICES */
+#services{background:var(--deep);}
+.services-head{display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:end;margin-bottom:72px;}
+.services-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--line);}
+.svc-card{background:var(--card);padding:44px 32px;position:relative;overflow:hidden;cursor:default;transition:background 0.4s;}
+.svc-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:var(--gold);transform:scaleX(0);transform-origin:left;transition:transform 0.4s ease;}
+.svc-card:hover{background:#1A2218;}
+.svc-card:hover::before{transform:scaleX(1);}
+.svc-number{font-family:'Bebas Neue',sans-serif;font-size:72px;color:rgba(212,168,67,0.04);line-height:1;position:absolute;top:10px;right:20px;letter-spacing:0;transition:color 0.4s;}
+.svc-card:hover .svc-number{color:rgba(212,168,67,0.1);}
+.svc-icon{font-size:30px;margin-bottom:18px;display:block;filter:drop-shadow(0 0 8px rgba(212,168,67,0.3));}
+.svc-name{font-family:'Bebas Neue',sans-serif;font-size:24px;letter-spacing:1px;color:var(--white);margin-bottom:12px;}
+.svc-desc{font-size:13px;color:var(--muted);line-height:1.7;font-weight:300;}
+.svc-more{margin-top:18px;font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--gold);font-weight:500;opacity:0;transform:translateX(-8px);transition:all 0.3s;display:flex;align-items:center;gap:8px;}
+.svc-card:hover .svc-more{opacity:1;transform:translateX(0);}
+
+/* CONTACT BAND */
+.contact-band{background:var(--gold);padding:60px 64px;display:flex;align-items:center;justify-content:space-between;gap:40px;position:relative;overflow:hidden;z-index:1;}
+.contact-band::before{content:'WA';position:absolute;right:-20px;font-family:'Bebas Neue',sans-serif;font-size:280px;color:rgba(0,0,0,0.05);line-height:1;top:50%;transform:translateY(-50%);pointer-events:none;letter-spacing:-10px;}
+.cb-left{flex:1;}
+.cb-tag{font-size:11px;letter-spacing:4px;text-transform:uppercase;font-weight:600;color:rgba(0,0,0,0.45);margin-bottom:10px;display:flex;align-items:center;gap:8px;}
+.cb-title{font-family:'Bebas Neue',sans-serif;font-size:clamp(38px,4vw,58px);color:var(--ink);letter-spacing:2px;line-height:1;}
+.cb-sub{font-size:14px;color:rgba(8,11,10,0.55);font-weight:300;margin-top:10px;}
+.cb-tel{text-decoration:none;display:flex;flex-direction:column;align-items:flex-end;}
+.cb-tel-label{font-size:11px;letter-spacing:3px;text-transform:uppercase;color:rgba(8,11,10,0.5);font-weight:500;margin-bottom:4px;}
+.cb-tel-num{font-family:'Bebas Neue',sans-serif;font-size:clamp(38px,3.5vw,56px);color:var(--ink);letter-spacing:3px;line-height:1;transition:opacity 0.3s;}
+.cb-tel:hover .cb-tel-num{opacity:0.7;}
+
+/* RÉALISATIONS */
+#realisations{background:var(--ink);}
+.real-intro{display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:60px;}
+
+/* AVANT/APRÈS GRID */
+.ba-section-title{font-family:'Bebas Neue',sans-serif;font-size:18px;letter-spacing:3px;color:var(--muted);margin-bottom:1.5rem;display:flex;align-items:center;gap:12px;}
+.ba-section-title::after{content:'';flex:1;height:1px;background:var(--line);}
+.ba-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:4px;margin-bottom:4px;}
+
+/* BA SLIDER */
+.ba-wrap{position:relative;aspect-ratio:4/3;overflow:hidden;cursor:ew-resize;user-select:none;}
+.ba-after{width:100%;height:100%;object-fit:cover;display:block;filter:saturate(0.85) brightness(0.9);}
+.ba-before-clip{position:absolute;inset:0;clip-path:inset(0 50% 0 0);}
+.ba-before-clip img{width:100%;height:100%;object-fit:cover;display:block;filter:saturate(0.6) brightness(0.75) sepia(0.1);}
+.ba-divider{position:absolute;top:0;bottom:0;left:50%;width:2px;background:var(--gold);transform:translateX(-50%);pointer-events:none;z-index:2;}
+.ba-handle{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:42px;height:42px;background:var(--gold);border-radius:50%;display:flex;align-items:center;justify-content:center;z-index:3;pointer-events:none;box-shadow:0 0 0 4px rgba(212,168,67,0.25);}
+.ba-handle svg{width:17px;height:17px;fill:var(--ink);}
+.ba-badge{position:absolute;top:12px;z-index:2;font-size:10px;letter-spacing:2px;text-transform:uppercase;padding:4px 10px;backdrop-filter:blur(6px);}
+.ba-badge.avant{left:12px;background:rgba(8,11,10,0.75);color:var(--muted);}
+.ba-badge.apres{right:12px;background:rgba(212,168,67,0.2);color:var(--gold);}
+.ba-caption{padding:12px 0 4px;font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);font-weight:300;}
+
+/* GALERIE SIMPLE */
+.real-grid{display:grid;grid-template-columns:repeat(12,1fr);grid-template-rows:260px 260px;gap:4px;margin-top:4px;}
+.real-item{overflow:hidden;position:relative;cursor:pointer;}
+.real-item:nth-child(1){grid-column:span 5;}
+.real-item:nth-child(2){grid-column:span 4;}
+.real-item:nth-child(3){grid-column:span 3;}
+.real-item:nth-child(4){grid-column:span 4;}
+.real-item:nth-child(5){grid-column:span 4;}
+.real-item:nth-child(6){grid-column:span 4;}
+.real-item img{width:100%;height:100%;object-fit:cover;transition:transform 0.7s ease,filter 0.5s ease;filter:saturate(0.6) brightness(0.8);}
+.real-item:hover img{transform:scale(1.06);filter:saturate(1) brightness(0.7);}
+.real-label{position:absolute;bottom:0;left:0;right:0;padding:24px 16px 14px;background:linear-gradient(to top,rgba(8,11,10,0.9),transparent);color:var(--white);font-size:10px;letter-spacing:2px;text-transform:uppercase;font-weight:400;opacity:0;transform:translateY(8px);transition:all 0.4s;}
+.real-label::before{content:'⚡ ';color:var(--gold);}
+.real-item:hover .real-label{opacity:1;transform:translateY(0);}
+
+/* AVIS */
+#avis{background:var(--deep);overflow:hidden;}
+.avis-top{display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:60px;}
+.google-card{background:var(--card);border:1px solid var(--line);padding:28px 36px;display:flex;align-items:center;gap:24px;}
+.g-score{font-family:'Bebas Neue',sans-serif;font-size:60px;color:var(--gold);letter-spacing:2px;line-height:1;text-shadow:0 0 24px rgba(212,168,67,0.2);}
+.g-stars{font-size:18px;color:#FFB800;letter-spacing:3px;margin:4px 0;}
+.g-count{font-size:12px;color:var(--muted);font-weight:300;letter-spacing:1px;}
+.g-logo{font-size:11px;color:var(--muted);margin-top:4px;font-weight:300;}
+.reviews-overflow{overflow:hidden;}
+.reviews-scroll{display:flex;gap:20px;animation:ticker 50s linear infinite;width:max-content;}
+.reviews-scroll:hover{animation-play-state:paused;}
+.rv-card{width:340px;background:var(--card);padding:28px;border:1px solid var(--line);flex-shrink:0;transition:border-color 0.3s;position:relative;}
+.rv-card:hover{border-color:rgba(212,168,67,0.25);}
+.rv-card::before{content:'"';position:absolute;top:12px;right:18px;font-size:72px;color:rgba(212,168,67,0.05);font-family:'Bebas Neue',sans-serif;line-height:1;}
+.rv-head{display:flex;align-items:center;gap:14px;margin-bottom:16px;}
+.rv-avatar{width:44px;height:44px;border-radius:50%;background:var(--panel);border:1px solid var(--line);display:flex;align-items:center;justify-content:center;font-family:'Bebas Neue',sans-serif;font-size:18px;color:var(--gold);flex-shrink:0;}
+.rv-name{font-size:14px;font-weight:500;color:var(--white);}
+.rv-date{font-size:11px;color:var(--muted);font-weight:300;}
+.rv-stars{font-size:13px;color:#FFB800;margin-bottom:12px;letter-spacing:2px;}
+.rv-text{font-size:13px;color:var(--muted);line-height:1.7;font-weight:300;font-style:italic;}
+.avis-placeholder{background:var(--card);border:1px dashed rgba(212,168,67,0.2);padding:48px 40px;text-align:center;margin-top:40px;}
+.avis-placeholder p{color:var(--muted);font-size:13px;font-weight:300;line-height:1.7;margin-bottom:16px;}
+.avis-placeholder a{color:var(--gold);text-decoration:none;font-size:12px;letter-spacing:2px;text-transform:uppercase;}
+.avis-placeholder a:hover{text-decoration:underline;}
+
+/* ZONES */
+#zones{background:var(--ink);}
+.zones-layout{display:grid;grid-template-columns:1fr 1.3fr;gap:80px;align-items:start;margin-top:60px;}
+.zones-grid{display:grid;grid-template-columns:1fr 1fr;gap:0;}
+.zone-row{padding:14px 0;border-bottom:1px solid rgba(212,168,67,0.07);display:flex;align-items:center;gap:12px;font-size:13px;color:var(--muted);font-weight:300;transition:color 0.3s;}
+.zone-row:hover{color:var(--gold);}
+.zone-arrow{font-size:10px;color:var(--gold);opacity:0.4;transition:opacity 0.3s;}
+.zone-row:hover .zone-arrow{opacity:1;}
+.zones-info{margin-top:32px;padding:24px 28px;background:var(--card);border:1px solid var(--line);border-left:3px solid var(--gold);}
+.zones-info-title{font-size:12px;letter-spacing:2px;text-transform:uppercase;color:var(--gold);margin-bottom:8px;}
+.zones-info-text{font-size:13px;color:var(--muted);font-weight:300;line-height:1.7;}
+.map-wrap{position:relative;}
+.map-frame{width:100%;height:480px;border:0;display:block;filter:grayscale(80%) brightness(0.55) sepia(0.3);transition:filter 0.5s;}
+.map-frame:hover{filter:grayscale(30%) brightness(0.7) sepia(0.15);}
+.map-badge{position:absolute;bottom:0;left:0;right:0;padding:18px 20px;background:linear-gradient(to top,rgba(8,11,10,0.95),transparent);}
+.map-badge-top{font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--gold);margin-bottom:4px;}
+.map-badge-bot{font-size:12px;color:var(--muted);font-weight:300;}
+
+/* CONTACT */
+#contact{background:var(--deep);}
+.contact-grid{display:grid;grid-template-columns:1fr 1.4fr;gap:80px;align-items:start;margin-top:60px;}
+.contact-card{display:flex;gap:18px;align-items:flex-start;padding:24px 28px;background:var(--card);border:1px solid var(--line);margin-bottom:3px;transition:border-color 0.3s;}
+.contact-card:hover{border-color:rgba(212,168,67,0.3);}
+.cc-icon{font-size:22px;flex-shrink:0;padding-top:2px;}
+.cc-label{font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--gold);margin-bottom:6px;font-weight:500;}
+.cc-val{font-size:14px;color:var(--light);font-weight:400;line-height:1.6;}
+.cc-val a{color:var(--light);text-decoration:none;transition:color 0.3s;}
+.cc-val a:hover{color:var(--gold);}
+
+/* FORM */
+.fg{margin-bottom:3px;position:relative;}
+.fg-row{display:grid;grid-template-columns:1fr 1fr;gap:3px;margin-bottom:0;}
+.fg label{display:block;font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--muted);margin-bottom:8px;font-weight:400;}
+.fg input,.fg textarea,.fg select{width:100%;background:var(--card);border:none;border-bottom:1px solid rgba(212,168,67,0.15);color:var(--light);font-family:'Outfit',sans-serif;font-size:14px;padding:14px 16px;outline:none;transition:border-color 0.3s,background 0.3s;resize:none;appearance:none;}
+.fg input:focus,.fg textarea:focus,.fg select:focus{background:#1A2218;border-bottom-color:var(--gold);}
+.fg textarea{min-height:110px;}
+.urgence-check{display:flex;align-items:center;gap:12px;margin:16px 0;cursor:pointer;font-size:13px;color:var(--muted);font-weight:300;}
+.urgence-check input{width:16px;height:16px;accent-color:var(--gold);}
+.form-note{font-size:12px;color:var(--muted);margin-top:12px;font-weight:300;line-height:1.6;}
+
+/* FOOTER */
+footer{background:var(--panel);padding:72px 64px 36px;border-top:1px solid var(--line);}
+.foot-grid{display:grid;grid-template-columns:1.5fr 1fr 1fr 1fr;gap:60px;margin-bottom:56px;}
+.foot-logo{display:flex;align-items:center;gap:10px;margin-bottom:18px;}
+.foot-bolt{width:28px;height:28px;background:var(--gold);clip-path:polygon(60% 0%,100% 0%,40% 50%,80% 50%,0% 100%,30% 55%,0% 55%);}
+.foot-brand{font-family:'Bebas Neue',sans-serif;font-size:18px;letter-spacing:3px;color:var(--white);}
+.foot-brand span{color:var(--gold);}
+.foot-about{font-size:13px;color:var(--muted);font-weight:300;line-height:1.75;margin-bottom:20px;}
+.foot-social{display:flex;gap:10px;}
+.foot-social a{width:34px;height:34px;border:1px solid var(--line);display:flex;align-items:center;justify-content:center;color:var(--muted);transition:all 0.3s;text-decoration:none;}
+.foot-social a:hover{border-color:var(--gold);color:var(--gold);}
+.foot-col h4{font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--gold);margin-bottom:20px;font-weight:500;}
+.foot-col ul{list-style:none;}
+.foot-col li{margin-bottom:12px;}
+.foot-col a{font-size:13px;color:var(--muted);text-decoration:none;font-weight:300;transition:color 0.3s;}
+.foot-col a:hover{color:var(--gold);}
+.foot-bottom{border-top:1px solid var(--line);padding-top:24px;display:flex;justify-content:space-between;align-items:center;}
+.foot-copy{font-size:12px;color:var(--muted);font-weight:300;}
+.foot-links{display:flex;gap:24px;}
+.foot-links a{font-size:12px;color:var(--muted);text-decoration:none;font-weight:300;transition:color 0.3s;}
+.foot-links a:hover{color:var(--gold);}
+
+/* SOCIAL FLOAT (WhatsApp + Facebook) */
+.social-float{position:fixed;bottom:28px;right:28px;display:flex;flex-direction:column;gap:10px;z-index:200;}
+.sf-btn{width:52px;height:52px;border-radius:50%;display:flex;align-items:center;justify-content:center;text-decoration:none;position:relative;transition:transform 0.3s,box-shadow 0.3s;}
+.sf-btn:hover{transform:scale(1.1);}
+.sf-label{position:absolute;right:64px;white-space:nowrap;background:var(--card);border:1px solid var(--line);color:var(--light);font-size:11px;padding:6px 14px;letter-spacing:1px;opacity:0;transform:translateX(8px);transition:all 0.3s;pointer-events:none;}
+.sf-btn:hover .sf-label{opacity:1;transform:translateX(0);}
+.sf-wa{background:#25D366;box-shadow:0 4px 18px rgba(37,211,102,0.3);}
+.sf-wa:hover{box-shadow:0 6px 28px rgba(37,211,102,0.5);}
+.sf-fb{background:#1877F2;box-shadow:0 4px 18px rgba(24,119,242,0.3);}
+.sf-fb:hover{box-shadow:0 6px 28px rgba(24,119,242,0.5);}
+.sf-pulse{position:absolute;inset:0;border-radius:50%;animation:pulse 2.5s ease-out infinite;}
+.sf-wa .sf-pulse{background:rgba(37,211,102,0.4);}
+
+/* RESPONSIVE */
+@media(max-width:1100px){
+  nav{padding:20px 40px;}
+  nav.scrolled{padding:14px 40px;}
+  section{padding:90px 40px;}
+  .hero-content{padding:0 40px;}
+  .contact-band{padding:50px 40px;}
+  .foot-grid{grid-template-columns:1fr 1fr;gap:40px;}
+  footer{padding:60px 40px 30px;}
+  .services-grid{grid-template-columns:repeat(2,1fr);}
+  .ba-grid{grid-template-columns:1fr 1fr;}
+  .ba-grid > *:last-child{display:none;}
+}
+@media(max-width:900px){
+  .services-head{grid-template-columns:1fr;gap:20px;margin-bottom:44px;}
+  .real-intro{flex-direction:column;align-items:flex-start;gap:20px;}
+  .avis-top{flex-direction:column;align-items:flex-start;gap:24px;}
+  .contact-band{flex-direction:column;text-align:center;padding:44px 32px;gap:24px;}
+  .cb-tel{align-items:center;}
+  .zones-layout{grid-template-columns:1fr;gap:40px;}
+  .contact-grid{grid-template-columns:1fr;gap:36px;}
+}
+@media(max-width:768px){
+  nav{padding:16px 20px;}
+  nav.scrolled{padding:12px 20px;}
+  .burger-btn{display:flex;}
+  .nav-links{display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(8,11,10,0.98);flex-direction:column;align-items:center;justify-content:center;gap:36px;z-index:1000;backdrop-filter:blur(20px);}
+  .nav-links.open{display:flex;}
+  .nav-links a{font-size:16px;letter-spacing:3px;}
+  #hero{padding-top:80px;}
+  .hero-content{padding:0 20px;max-width:100%;}
+  .hero-title{font-size:clamp(54px,14vw,82px);}
+  .hero-ctas{flex-direction:column;gap:12px;}
+  .hero-ctas .btn-gold,.hero-ctas .btn-ghost{width:100%;justify-content:center;clip-path:none;}
+  .stats-strip{grid-template-columns:repeat(2,1fr);}
+  .stat-block{padding:28px 16px;border-right:none;border-bottom:1px solid var(--line);}
+  .stat-block:nth-child(odd){border-right:1px solid var(--line);}
+  .stat-block:nth-child(3),.stat-block:nth-child(4){border-bottom:none;}
+  .stat-n{font-size:42px;}
+  section{padding:60px 20px;}
+  .section-title{font-size:clamp(36px,9vw,52px);}
+  .services-grid{grid-template-columns:1fr;}
+  .svc-more{opacity:1;transform:translateX(0);}
+  .contact-band{padding:40px 20px;}
+  .ba-grid{grid-template-columns:1fr;}
+  .ba-grid > *:last-child{display:block;}
+  .real-grid{grid-template-columns:1fr 1fr;grid-template-rows:repeat(3,180px);gap:4px;}
+  .real-item:nth-child(n){grid-column:span 1;}
+  .real-label{opacity:1;transform:translateY(0);font-size:9px;}
+  .zones-grid{grid-template-columns:1fr;}
+  .map-frame{height:260px;}
+  .fg-row{grid-template-columns:1fr;}
+  footer{padding:48px 20px 24px;}
+  .foot-grid{grid-template-columns:1fr;gap:32px;}
+  .foot-bottom{flex-direction:column;gap:14px;text-align:center;}
+  .social-float{bottom:18px;right:18px;gap:8px;}
+  .sf-btn{width:46px;height:46px;}
+  .sf-label{display:none;}
+}
+@media(max-width:480px){
+  .ba-grid{grid-template-columns:1fr;}
+  .real-grid{grid-template-columns:1fr;grid-template-rows:auto;}
+  .real-item{height:200px;}
+  .btn-gold{clip-path:none;}
+}
+</style>
+</head>
+<body>
+<div class="circuit-bg"></div>
+
+<!-- SOCIAL FLOAT -->
+<div class="social-float">
+  <a href="https://wa.me/2250555016389" class="sf-btn sf-wa" target="_blank" rel="noopener" aria-label="WhatsApp">
+    <div class="sf-pulse"></div>
+    <span class="sf-label">WhatsApp</span>
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+  </a>
+  <a href="https://www.facebook.com/profile.php?id=100070075521580" class="sf-btn sf-fb" target="_blank" rel="noopener" aria-label="Facebook">
+    <span class="sf-label">Facebook</span>
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="white"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+  </a>
+</div>
+
+<!-- TICKER -->
+<div class="ticker">
+  <div class="ticker-inner">
+    <span class="ticker-item">Électricien bâtiment à Abidjan</span>
+    <span class="ticker-item">Installations électriques sur mesure</span>
+    <span class="ticker-item">Éclairage décoratif & faux plafonds</span>
+    <span class="ticker-item">Cocody · Rivera · Palmeraie</span>
+    <span class="ticker-item">Devis sur demande — Contactez-moi</span>
+    <span class="ticker-item">Électricien bâtiment à Abidjan</span>
+    <span class="ticker-item">Installations électriques sur mesure</span>
+    <span class="ticker-item">Éclairage décoratif & faux plafonds</span>
+    <span class="ticker-item">Cocody · Rivera · Palmeraie</span>
+    <span class="ticker-item">Devis sur demande — Contactez-moi</span>
+  </div>
+</div>
+
+<!-- NAV -->
+<nav id="navbar">
+  <a class="logo-wrap" href="#">
+    <div class="logo-bolt"></div>
+    <div class="logo-text">GILDAS<span> ÉLEC</span></div>
+  </a>
+  <button class="burger-btn" id="burgerBtn" aria-label="Menu"><span></span><span></span><span></span></button>
+  <ul class="nav-links">
+    <li><a href="#services">Services</a></li>
+    <li><a href="#realisations">Réalisations</a></li>
+    <li><a href="#avis">Avis</a></li>
+    <li><a href="#zones">Zones</a></li>
+    <li><a href="#contact" class="nav-cta">⚡ Devis</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-bg">
+    <img src="images/plafond.jpg" alt="Réalisation électrique Gildas Hounkponou">
+  </div>
+  <div class="hero-content">
+    <div class="hero-status">
+      <div class="status-dot"></div>
+      Disponible — Abidjan Côte d'Ivoire
+    </div>
+    <h1 class="hero-title">
+      CHEF<br>
+      ÉLECTRICIEN<br>
+      <span class="gold">BÂTIMENT</span>
+    </h1>
+    <p class="hero-sub">Installations électriques, éclairages décoratifs et faux plafonds sur mesure à Abidjan. Du branchement au lustre, un savoir-faire reconnu au service de votre espace.</p>
+    <div class="hero-badges">
+      <div class="badge"><span>💡</span> Éclairage décoratif</div>
+      <div class="badge"><span>🏗️</span> Bâtiment neuf & rénovation</div>
+      <div class="badge"><span>📍</span> Abidjan & environs</div>
+    </div>
+    <div class="hero-ctas">
+      <a href="#contact" class="btn-gold">⚡ Demander un devis</a>
+      <a href="https://wa.me/2250555016389" class="btn-ghost" target="_blank">📱 WhatsApp direct</a>
+    </div>
+  </div>
+</section>
+
+<!-- STATS STRIP -->
+<div class="stats-strip">
+  <div class="stat-block">
+    <!-- 📝 À REMPLIR : nombre d'années d'expérience -->
+    <span class="stat-placeholder">?? ANS</span>
+    <span class="stat-l">D'expérience</span>
+  </div>
+  <div class="stat-block">
+    <!-- 📝 À REMPLIR : nombre de projets réalisés -->
+    <span class="stat-placeholder">??? +</span>
+    <span class="stat-l">Projets réalisés</span>
+  </div>
+  <div class="stat-block">
+    <!-- 📝 À REMPLIR : note Google si disponible -->
+    <span class="stat-placeholder">? / 5</span>
+    <span class="stat-l">Note client</span>
+  </div>
+  <div class="stat-block">
+    <span class="stat-n">100%</span>
+    <span class="stat-l">Satisfaction</span>
+  </div>
+</div>
+
+<!-- SERVICES -->
+<section id="services">
+  <div class="services-head">
+    <div class="reveal">
+      <div class="eyebrow">Ce que je fais</div>
+      <h2 class="section-title">MES<br><span class="gold">SERVICES</span></h2>
+    </div>
+    <p class="reveal" style="font-size:14px;color:var(--muted);font-weight:300;line-height:1.8;max-width:400px;">De l'installation complète d'un logement à la création d'ambiances lumineuses haut de gamme, j'interviens avec le même soin du détail.</p>
+  </div>
+  <div class="services-grid">
+    <div class="svc-card reveal"><span class="svc-number">01</span><span class="svc-icon">⚡</span><div class="svc-name">Installation électrique</div><p class="svc-desc">Câblage neuf ou rénovation complète, tableaux électriques, prises, interrupteurs. Travail soigné et sécurisé.</p><div class="svc-more">En savoir plus →</div></div>
+    <div class="svc-card reveal"><span class="svc-number">02</span><span class="svc-icon">💡</span><div class="svc-name">Éclairage décoratif</div><p class="svc-desc">Plafonds lumineux, faux plafonds avec éclairage intégré, spots, LED, lustre et mise en lumière sur mesure.</p><div class="svc-more">En savoir plus →</div></div>
+    <div class="svc-card reveal"><span class="svc-number">03</span><span class="svc-icon">🏗️</span><div class="svc-name">Construction neuve</div><p class="svc-desc">Accompagnement des chantiers de bâtiment neuf, de la lecture des plans électriques à la mise en service.</p><div class="svc-more">En savoir plus →</div></div>
+    <div class="svc-card reveal"><span class="svc-number">04</span><span class="svc-icon">🔧</span><div class="svc-name">Rénovation & mise à niveau</div><p class="svc-desc">Reprise d'installations vétustes, extension de circuits, remplacement de tableaux, travaux de mise aux normes.</p><div class="svc-more">En savoir plus →</div></div>
+    <div class="svc-card reveal"><span class="svc-number">05</span><span class="svc-icon">🏪</span><div class="svc-name">Commerces & concept stores</div><p class="svc-desc">Aménagement électrique et lumineux pour boutiques, restaurants et espaces professionnels. Ambiance sur mesure.</p><div class="svc-more">En savoir plus →</div></div>
+    <div class="svc-card reveal"><span class="svc-number">06</span><span class="svc-icon">🔌</span><div class="svc-name">Dépannage</div><p class="svc-desc">Intervention sur pannes, disjonctions, courts-circuits et tout dysfonctionnement électrique. Diagnostic rapide.</p><div class="svc-more">En savoir plus →</div></div>
+    <div class="svc-card reveal"><span class="svc-number">07</span><span class="svc-icon">🏠</span><div class="svc-name">Résidentiel & villas</div><p class="svc-desc">Particuliers, résidences et villas. Installation, finitions soignées et accompagnement de A à Z.</p><div class="svc-more">En savoir plus →</div></div>
+    <div class="svc-card reveal"><span class="svc-number">08</span><span class="svc-icon">📐</span><div class="svc-name">Conseil & devis</div>
+      <p class="svc-desc">Étude de votre projet, conseils techniques personnalisés et devis détaillé.
+        <!-- 📝 À CONFIRMER : le devis est-il gratuit ? -->
+        <span class="placeholder-tag" style="margin-top:8px;display:inline-block;">Gratuit ? À confirmer</span>
+      </p>
+      <div class="svc-more">Contactez-moi →</div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT BAND -->
+<div class="contact-band">
+  <div class="cb-left">
+    <div class="cb-tag">⚡ Contact direct</div>
+    <div class="cb-title">UN PROJET ?<br>ÉCRIVEZ-MOI</div>
+    <div class="cb-sub">Réponse rapide par WhatsApp — disponible pour discuter de votre chantier</div>
+  </div>
+  <a href="https://wa.me/2250555016389" class="cb-tel" target="_blank" rel="noopener">
+    <span class="cb-tel-label">WhatsApp</span>
+    <span class="cb-tel-num">05 55 01 63 89</span>
+  </a>
+</div>
+
+<!-- RÉALISATIONS -->
+<section id="realisations">
+  <div class="real-intro reveal">
+    <div>
+      <div class="eyebrow">Portfolio</div>
+      <h2 class="section-title">MES<br><span class="gold">RÉALISATIONS</span></h2>
+    </div>
+    <p style="max-width:380px;font-size:14px;font-weight:300;color:var(--muted);line-height:1.8;">Glissez sur les images avant/après pour mesurer la transformation. Chaque projet, une signature lumineuse.</p>
+  </div>
+
+  <!-- AVANT / APRÈS -->
+  <div class="ba-section-title reveal">Avant &amp; Après</div>
+  <div class="ba-grid reveal">
+
+    <div>
+      <div class="ba-wrap" data-ba>
+        <img class="ba-after" src="images/concept-store.jpg" alt="Concept store après" />
+        <div class="ba-before-clip"><img src="images/concept-store-avant.jpg" alt="Concept store avant" /></div>
+        <div class="ba-divider"></div>
+        <div class="ba-handle"><svg viewBox="0 0 24 24"><path d="M8 5l-7 7 7 7V5zm8 0v14l7-7-7-7z"/></svg></div>
+        <span class="ba-badge avant">Avant</span>
+        <span class="ba-badge apres">Après</span>
+      </div>
+      <div class="ba-caption">Concept store — Transformation complète</div>
+    </div>
+
+    <div>
+      <div class="ba-wrap" data-ba>
+        <img class="ba-after" src="images/plafond2-apres.jpg" alt="Plafond après" />
+        <div class="ba-before-clip"><img src="images/plafond2-avant.jpg" alt="Plafond avant" /></div>
+        <div class="ba-divider"></div>
+        <div class="ba-handle"><svg viewBox="0 0 24 24"><path d="M8 5l-7 7 7 7V5zm8 0v14l7-7-7-7z"/></svg></div>
+        <span class="ba-badge avant">Avant</span>
+        <span class="ba-badge apres">Après</span>
+      </div>
+      <div class="ba-caption">Plafond lumineux — Métamorphose</div>
+    </div>
+
+    <div>
+      <div class="ba-wrap" data-ba>
+        <img class="ba-after" src="images/luminaire-apres.jpg" alt="Luminaire après" />
+        <div class="ba-before-clip"><img src="images/luminaire.jpg" alt="Luminaire avant" /></div>
+        <div class="ba-divider"></div>
+        <div class="ba-handle"><svg viewBox="0 0 24 24"><path d="M8 5l-7 7 7 7V5zm8 0v14l7-7-7-7z"/></svg></div>
+        <span class="ba-badge avant">Avant</span>
+        <span class="ba-badge apres">Après</span>
+      </div>
+      <div class="ba-caption">Luminaire — Installation & finition</div>
+    </div>
+
+  </div>
+
+  <!-- GALERIE -->
+  <div class="ba-section-title reveal" style="margin-top:64px;">Galerie réalisations</div>
+  <div class="real-grid reveal">
+    <div class="real-item">
+      <img src="images/plafond.jpg" alt="Plafond lumineux" loading="lazy">
+      <div class="real-label">Plafond lumineux</div>
+    </div>
+    <div class="real-item">
+      <img src="images/escalier.jpg" alt="Éclairage escalier" loading="lazy">
+      <div class="real-label">Escalier éclairé</div>
+    </div>
+    <div class="real-item">
+      <img src="images/lustre.jpg" alt="Lustre" loading="lazy">
+      <div class="real-label">Lustre</div>
+    </div>
+    <div class="real-item">
+      <img src="images/plafond octogones.jpg" alt="Plafond octogones" loading="lazy">
+      <div class="real-label">Plafond octogones</div>
+    </div>
+    <div class="real-item">
+      <img src="images/plafond rectangle.jpg" alt="Plafond rectangle" loading="lazy">
+      <div class="real-label">Plafond rectangle</div>
+    </div>
+    <div class="real-item">
+      <img src="images/concept-store.jpg" alt="Concept store" loading="lazy">
+      <div class="real-label">Concept store</div>
+    </div>
+  </div>
+</section>
+
+<!-- AVIS -->
+<section id="avis">
+  <div class="avis-top reveal">
+    <div>
+      <div class="eyebrow">Témoignages</div>
+      <h2 class="section-title">CE QUE DISENT<br><span class="gold">MES CLIENTS</span></h2>
+    </div>
+    <!-- 📝 Si note Google disponible, décommenter et remplir ce bloc -->
+    <!--
+    <div class="google-card">
+      <div>
+        <div class="g-score">4.9</div>
+        <div class="g-stars">★★★★★</div>
+        <div class="g-count">XX avis vérifiés</div>
+        <div class="g-logo">Google Reviews</div>
+      </div>
+    </div>
+    -->
+  </div>
+
+  <!-- 📝 Si des avis clients sont disponibles (Facebook, WhatsApp, bouche à oreille), remplacer ce bloc -->
+  <div class="avis-placeholder reveal">
+    <p>Les avis clients seront affichés ici.<br>Vous pouvez partager des témoignages reçus par WhatsApp, sur Facebook, ou solliciter des avis Google.</p>
+    <a href="https://www.facebook.com/profile.php?id=100070075521580" target="_blank" rel="noopener">→ Voir la page Facebook</a>
+  </div>
+
+  <!-- EXEMPLE de carrousel avis (décommenter & adapter quand vous avez des vrais avis) -->
+  <!--
+  <div class="reviews-overflow" style="margin-top:40px;">
+    <div class="reviews-scroll">
+      <div class="rv-card">
+        <div class="rv-head"><div class="rv-avatar">A</div><div><div class="rv-name">Prénom N.</div><div class="rv-date">Il y a X semaines</div></div></div>
+        <div class="rv-stars">★★★★★</div>
+        <p class="rv-text">"Texte du témoignage ici."</p>
+      </div>
+    </div>
+  </div>
+  -->
+</section>
+
+<!-- ZONES D'INTERVENTION -->
+<section id="zones">
+  <div class="reveal">
+    <div class="eyebrow">Secteur</div>
+    <h2 class="section-title">ZONES<br><span class="gold">D'INTERVENTION</span></h2>
+    <!-- 📝 À CONFIRMER : zones exactes d'intervention (voir Facebook ou demander à Gildas) -->
+    <p style="margin-top:14px;font-size:14px;color:var(--muted);font-weight:300;max-width:500px;line-height:1.8;">
+      Basé à Cocody Rivera Palmeraie, j'interviens à Abidjan et dans les communes environnantes.
+      <span class="placeholder-tag" style="margin-left:8px;">Zone complète à confirmer</span>
+    </p>
+  </div>
+  <div class="zones-layout">
+    <div>
+      <div class="zones-grid reveal">
+        <!-- 📝 À COMPLÉTER / CONFIRMER avec Gildas -->
+        <div class="zone-row"><span class="zone-arrow">→</span> Cocody</div>
+        <div class="zone-row"><span class="zone-arrow">→</span> Plateau</div>
+        <div class="zone-row"><span class="zone-arrow">→</span> Marcory</div>
+        <div class="zone-row"><span class="zone-arrow">→</span> Treichville</div>
+        <div class="zone-row"><span class="zone-arrow">→</span> Yopougon</div>
+        <div class="zone-row"><span class="zone-arrow">→</span> Adjamé</div>
+        <div class="zone-row"><span class="zone-arrow">→</span> Bingerville</div>
+        <div class="zone-row"><span class="zone-arrow">→</span> Abobo</div>
+        <div class="zone-row"><span class="zone-arrow">→</span> Koumassi</div>
+        <div class="zone-row"><span class="zone-arrow">→</span> Port-Bouët</div>
+        <div class="zone-row"><span class="zone-arrow">→</span> Riviera Palmeraie</div>
+        <div class="zone-row"><span class="zone-arrow">→</span> 2 Plateaux</div>
+      </div>
+      <div class="zones-info reveal">
+        <div class="zones-info-title">⚡ Zone étendue possible</div>
+        <!-- 📝 À CONFIRMER avec Gildas : accepte-t-il les interventions hors Abidjan ? -->
+        <div class="zones-info-text">Pour les projets importants, n'hésitez pas à me contacter même hors des zones listées. <span class="placeholder-tag">À confirmer avec Gildas</span></div>
+      </div>
+    </div>
+    <div class="map-wrap reveal">
+      <iframe class="map-frame"
+        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d15889.189985417215!2d-3.9552861999999993!3d5.3715224!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xfc1eccc27a4e1c9%3A0xf9cd42ec877924f6!2sRivi%C3%A9ra%20Palmeraie%2C%20Abidjan%2C%20C%C3%B4te%20d'Ivoire!5e0!3m2!1sfr!2sfr!4v1779791897045!5m2!1sfr!2sfr"
+        allowfullscreen loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+      <div class="map-badge">
+        <div class="map-badge-top">📍 Basé à</div>
+        <div class="map-badge-bot">Abidjan Cocody Rivera Palmeraie, Côte d'Ivoire</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="reveal">
+    <div class="eyebrow">Parlons de votre projet</div>
+    <h2 class="section-title">DEMANDER<br><span class="gold">UN DEVIS</span></h2>
+  </div>
+  <div class="contact-grid">
+    <div>
+      <div class="contact-card reveal">
+        <div class="cc-icon">📱</div>
+        <div>
+          <div class="cc-label">WhatsApp</div>
+          <div class="cc-val"><a href="https://wa.me/2250555016389">+225 05 55 01 63 89</a></div>
+        </div>
+      </div>
+      <div class="contact-card reveal">
+        <div class="cc-icon">📞</div>
+        <div>
+          <div class="cc-label">Téléphone</div>
+          <div class="cc-val"><a href="tel:+2550706894836">+255 07 06 89 48 36</a></div>
+        </div>
+      </div>
+      <div class="contact-card reveal">
+        <div class="cc-icon">✉️</div>
+        <div>
+          <div class="cc-label">Email</div>
+          <div class="cc-val"><a href="mailto:hounkponougildas08@gmail.com">hounkponougildas08@gmail.com</a></div>
+        </div>
+      </div>
+      <div class="contact-card reveal">
+        <div class="cc-icon">📘</div>
+        <div>
+          <div class="cc-label">Facebook</div>
+          <div class="cc-val"><a href="https://www.facebook.com/profile.php?id=100070075521580" target="_blank" rel="noopener">Électricien Bâtiment Abidjan – CI</a></div>
+        </div>
+      </div>
+      <div class="contact-card reveal">
+        <div class="cc-icon">📍</div>
+        <div>
+          <div class="cc-label">Localisation</div>
+          <div class="cc-val" style="font-size:13px;font-weight:300;color:var(--muted);">Abidjan Cocody Rivera Palmeraie<br>Côte d'Ivoire</div>
+        </div>
+      </div>
+      <div class="contact-card reveal">
+        <div class="cc-icon">🕐</div>
+        <div>
+          <div class="cc-label">Horaires</div>
+          <!-- 📝 À CONFIRMER : horaires de disponibilité de Gildas -->
+          <div class="cc-val" style="font-size:13px;font-weight:300;color:var(--muted);">
+            <span class="placeholder-tag">Horaires à confirmer avec Gildas</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="reveal">
+      <div id="contactFormWrap">
+        <div class="fg-row">
+          <div class="fg"><label>Prénom</label><input type="text" id="fname" placeholder="Votre prénom"></div>
+          <div class="fg"><label>Nom</label><input type="text" id="lname" placeholder="Votre nom"></div>
+        </div>
+        <div class="fg-row" style="margin-top:3px;">
+          <div class="fg"><label>Téléphone / WhatsApp</label><input type="tel" id="fphone" placeholder="+225 ..."></div>
+          <div class="fg"><label>Email</label><input type="email" id="femail" placeholder="votre@email.com"></div>
+        </div>
+        <div class="fg" style="margin-top:3px;">
+          <label>Type de prestation</label>
+          <select id="fservice">
+            <option value="" disabled selected>Choisissez</option>
+            <option>Installation électrique neuve</option>
+            <option>Rénovation / mise à niveau</option>
+            <option>Éclairage décoratif / faux plafond</option>
+            <option>Dépannage</option>
+            <option>Aménagement commercial</option>
+            <option>Résidentiel / villa</option>
+            <option>Autre</option>
+          </select>
+        </div>
+        <div class="fg" style="margin-top:3px;">
+          <label>Quartier / Commune</label>
+          <input type="text" id="fzone" placeholder="Ex : Cocody, Marcory, Plateau...">
+        </div>
+        <label class="urgence-check">
+          <input type="checkbox" id="urgCheck">
+          <span>🚨 <strong>C'est urgent</strong> — je souhaite être contacté rapidement</span>
+        </label>
+        <div class="fg">
+          <label>Décrivez votre projet</label>
+          <textarea id="fmsg" placeholder="Décrivez brièvement votre besoin (type de travaux, surface, maison ou commerce...)"></textarea>
+        </div>
+        <div style="display:flex;align-items:center;gap:20px;margin-top:8px;flex-wrap:wrap;">
+          <button class="btn-gold" id="submitBtn">⚡ Envoyer ma demande</button>
+        </div>
+        <p class="form-note">Le formulaire ouvre WhatsApp avec votre message pré-rempli — réponse rapide garantie.</p>
+      </div>
+      <div id="formSuccess" style="display:none;background:var(--card);border:1px solid var(--line);padding:48px 36px;text-align:center;">
+        <div style="font-size:2.5rem;margin-bottom:16px;">✓</div>
+        <div style="font-family:'Bebas Neue',sans-serif;font-size:1.8rem;color:var(--gold);margin-bottom:10px;">Message envoyé !</div>
+        <p style="color:var(--muted);font-size:13px;font-weight:300;line-height:1.7;">WhatsApp s'est ouvert avec votre message. Gildas vous répondra dès que possible.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="foot-grid">
+    <div>
+      <div class="foot-logo">
+        <div class="foot-bolt"></div>
+        <div class="foot-brand">GILDAS<span> ÉLEC</span></div>
+      </div>
+      <p class="foot-about">Chef électricien bâtiment basé à Abidjan Cocody Rivera Palmeraie. Installations, rénovations et créations lumineuses sur mesure en Côte d'Ivoire.</p>
+      <div class="foot-social">
+        <a href="https://wa.me/2250555016389" target="_blank" rel="noopener" title="WhatsApp">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+        </a>
+        <a href="https://www.facebook.com/profile.php?id=100070075521580" target="_blank" rel="noopener" title="Facebook">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+        </a>
+        <a href="mailto:hounkponougildas08@gmail.com" title="Email">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
+        </a>
+      </div>
+    </div>
+    <div class="foot-col">
+      <h4>Services</h4>
+      <ul>
+        <li><a href="#services">Installation électrique</a></li>
+        <li><a href="#services">Éclairage décoratif</a></li>
+        <li><a href="#services">Construction neuve</a></li>
+        <li><a href="#services">Rénovation</a></li>
+        <li><a href="#services">Concept stores</a></li>
+        <li><a href="#services">Dépannage</a></li>
+      </ul>
+    </div>
+    <div class="foot-col">
+      <h4>Navigation</h4>
+      <ul>
+        <li><a href="#">Accueil</a></li>
+        <li><a href="#realisations">Réalisations</a></li>
+        <li><a href="#avis">Avis clients</a></li>
+        <li><a href="#zones">Zones d'intervention</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+    </div>
+    <div class="foot-col">
+      <h4>Contact</h4>
+      <ul>
+        <li><a href="https://wa.me/2250555016389">+225 05 55 01 63 89</a></li>
+        <li><a href="tel:+2550706894836">+255 07 06 89 48 36</a></li>
+        <li><a href="mailto:hounkponougildas08@gmail.com">hounkponougildas08@gmail.com</a></li>
+        <li><a href="#zones">Abidjan Cocody Rivera</a></li>
+        <li><a href="https://www.facebook.com/profile.php?id=100070075521580" target="_blank">Page Facebook</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="foot-bottom">
+    <span class="foot-copy">© 2025 Gildas Hounkponou — Chef Électricien Bâtiment · Abidjan, Côte d'Ivoire</span>
+    <div class="foot-links">
+      <a href="#contact">Devis</a>
+      <a href="#realisations">Réalisations</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+// NAV SCROLL
+window.addEventListener('scroll',()=>{
+  document.getElementById('navbar').classList.toggle('scrolled',window.scrollY>60);
+});
+
+// BURGER MENU
+const burgerBtn=document.getElementById('burgerBtn');
+const navLinks=document.querySelector('.nav-links');
+if(burgerBtn){
+  burgerBtn.addEventListener('click',()=>{
+    burgerBtn.classList.toggle('open');
+    navLinks.classList.toggle('open');
+    document.body.style.overflow=navLinks.classList.contains('open')?'hidden':'';
+  });
+  document.querySelectorAll('.nav-links a').forEach(a=>a.addEventListener('click',()=>{
+    burgerBtn.classList.remove('open');
+    navLinks.classList.remove('open');
+    document.body.style.overflow='';
+  }));
+}
+
+// REVEAL ON SCROLL
+const obs=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add('visible');});
+},{threshold:0.08,rootMargin:'0px 0px -40px 0px'});
+document.querySelectorAll('.reveal,.stat-block,.svc-card,.real-item').forEach(el=>obs.observe(el));
+document.querySelectorAll('.svc-card').forEach((el,i)=>{el.style.transitionDelay=`${(i%4)*0.08}s`;});
+document.querySelectorAll('.real-item').forEach((el,i)=>{el.style.transitionDelay=`${(i%3)*0.1}s`;});
+document.querySelectorAll('.stat-block').forEach((el,i)=>{el.style.transitionDelay=`${i*0.12}s`;});
+
+// HERO PARALLAX
+window.addEventListener('scroll',()=>{
+  const y=window.scrollY;
+  const hbg=document.querySelector('.hero-bg img');
+  if(hbg)hbg.style.transform=`translateY(${y*0.25}px)`;
+});
+
+// BEFORE/AFTER SLIDERS
+document.querySelectorAll('[data-ba]').forEach(wrapper=>{
+  const clip=wrapper.querySelector('.ba-before-clip');
+  const divider=wrapper.querySelector('.ba-divider');
+  const handle=wrapper.querySelector('.ba-handle');
+  let dragging=false;
+  function setPos(x){
+    const rect=wrapper.getBoundingClientRect();
+    const pct=Math.max(0,Math.min(1,(x-rect.left)/rect.width));
+    clip.style.clipPath=`inset(0 ${(100-pct*100).toFixed(1)}% 0 0)`;
+    divider.style.left=`${(pct*100).toFixed(1)}%`;
+    handle.style.left=`${(pct*100).toFixed(1)}%`;
+  }
+  wrapper.addEventListener('mousedown',e=>{dragging=true;setPos(e.clientX);});
+  window.addEventListener('mousemove',e=>{if(dragging)setPos(e.clientX);});
+  window.addEventListener('mouseup',()=>{dragging=false;});
+  wrapper.addEventListener('touchstart',e=>{dragging=true;setPos(e.touches[0].clientX);},{passive:true});
+  window.addEventListener('touchmove',e=>{if(dragging)setPos(e.touches[0].clientX);},{passive:true});
+  window.addEventListener('touchend',()=>{dragging=false;});
+});
+
+// CONTACT FORM → WHATSAPP
+document.getElementById('submitBtn').addEventListener('click',function(){
+  const fname=document.getElementById('fname').value.trim();
+  const lname=document.getElementById('lname').value.trim();
+  const phone=document.getElementById('fphone').value.trim();
+  const email=document.getElementById('femail').value.trim();
+  const service=document.getElementById('fservice');
+  const serviceText=service.options[service.selectedIndex]?.text||'';
+  const zone=document.getElementById('fzone').value.trim();
+  const msg=document.getElementById('fmsg').value.trim();
+  const urgent=document.getElementById('urgCheck').checked;
+  if(!fname){document.getElementById('fname').focus();return;}
+  let text=`Bonjour M. Hounkponou,\n\nJe vous contacte depuis votre site web.\n\n`;
+  text+=`Nom : ${fname} ${lname}\n`;
+  if(phone)text+=`Téléphone : ${phone}\n`;
+  if(email)text+=`Email : ${email}\n`;
+  if(serviceText&&serviceText!=='Choisissez')text+=`Prestation : ${serviceText}\n`;
+  if(zone)text+=`Zone : ${zone}\n`;
+  if(urgent)text+=`\n🚨 URGENT — Rappel rapide souhaité\n`;
+  if(msg)text+=`\nProjet :\n${msg}`;
+  document.getElementById('contactFormWrap').style.display='none';
+  document.getElementById('formSuccess').style.display='block';
+  setTimeout(()=>{window.open('https://wa.me/2250555016389?text='+encodeURIComponent(text),'_blank');},600);
+});
+</script>
+</body>
+</html>
