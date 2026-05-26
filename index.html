@@ -148,21 +148,22 @@ section{padding:120px 64px;position:relative;z-index:1;}
 /* chaque item BA : centré, taille modérée */
 .ba-item{width:100%;max-width:520px;}
 
-/* BA SLIDER — hauteur naturelle, zéro crop */
+/* BA SLIDER — aucun crop */
 .ba-wrap{
   position:relative;
   overflow:hidden;
   cursor:ew-resize;
   user-select:none;
+  background:var(--card);
+  /* la hauteur est fixée par JS une fois les images chargées */
 }
-/* l'image "après" définit la hauteur naturelle */
 .ba-after{
   display:block;
   width:100%;
-  height:auto;
-  filter:saturate(0.85) brightness(0.9);
+  height:100%;
+  object-fit:contain;
+  object-position:top center;
 }
-/* l'image "avant" superposée */
 .ba-before-clip{
   position:absolute;
   inset:0;
@@ -172,7 +173,8 @@ section{padding:120px 64px;position:relative;z-index:1;}
 .ba-before-clip img{
   width:100%;
   height:100%;
-  object-fit:fill;
+  object-fit:contain;
+  object-position:top center;
   display:block;
   filter:saturate(0.6) brightness(0.75) sepia(0.1);
 }
@@ -661,9 +663,9 @@ footer{background:var(--panel);padding:72px 64px 36px;border-top:1px solid var(-
 
     <div class="ba-item">
       <div class="ba-wrap" data-ba data-ba-index="4">
-        <div class="ba-before-clip"><img src="images/plafond-contemporain-travaux.jpg" alt="Plafond contemporain en travaux" /></div>
-        <img class="ba-after" src="images/plafond-contemporain.jpg" alt="Plafond contemporain après" />
-       <div class="ba-divider"></div>
+        <img class="ba-before-clip" src="images/plafond-contemporain-travaux.jpg" alt="Plafond contemporain en travaux" />
+        <div class="ba-after"><img src="images/plafond-contemporain.jpg" alt="Plafond contemporain après" /></div>
+        <div class="ba-divider"></div>
         <div class="ba-handle"><svg viewBox="0 0 24 24"><path d="M8 5l-7 7 7 7V5zm8 0v14l7-7-7-7z"/></svg></div>
         <span class="ba-badge avant">Travaux</span>
         <span class="ba-badge apres">Résultat</span>
@@ -1073,6 +1075,30 @@ function initBASlider(wrapper){
   const clip=wrapper.querySelector('.ba-before-clip');
   const divider=wrapper.querySelector('.ba-divider');
   const handle=wrapper.querySelector('.ba-handle');
+  const imgAfter=wrapper.querySelector('.ba-after');
+  const imgBefore=wrapper.querySelector('.ba-before-clip img');
+
+  // Calcule la hauteur naturelle des deux images et fixe le wrapper
+  function setWrapperHeight(){
+    const w=wrapper.offsetWidth;
+    if(!w) return;
+    const ratioAfter = imgAfter.naturalHeight / imgAfter.naturalWidth;
+    const ratioBefore = imgBefore.naturalHeight / imgBefore.naturalWidth;
+    // hauteur = max des deux ratios × largeur disponible
+    const h = Math.max(ratioAfter, ratioBefore) * w;
+    wrapper.style.height = h + 'px';
+  }
+
+  let loaded=0;
+  function onLoad(){
+    loaded++;
+    if(loaded>=2){ setWrapperHeight(); }
+  }
+  if(imgAfter.complete && imgAfter.naturalWidth) onLoad(); else imgAfter.addEventListener('load',onLoad);
+  if(imgBefore.complete && imgBefore.naturalWidth) onLoad(); else imgBefore.addEventListener('load',onLoad);
+  // recalcul au resize
+  window.addEventListener('resize',()=>{ if(loaded>=2) setWrapperHeight(); });
+
   let target=0.5,current=0.5,dragging=false,rafId=null;
   function applyPos(p){
     clip.style.clipPath=`inset(0 ${(100-p*100).toFixed(2)}% 0 0)`;
@@ -1122,6 +1148,19 @@ function buildBASlider(data){
       <span class="ba-badge apres">${data.labelB}</span>
     </div>`;
   const w=document.getElementById('lbBaWrap');
+  // attend les deux images pour fixer la hauteur
+  const ia=w.querySelector('.ba-after');
+  const ib=w.querySelector('.ba-before-clip img');
+  function fixH(){
+    const width=w.offsetWidth||780;
+    const rA=ia.naturalHeight/ia.naturalWidth;
+    const rB=ib.naturalHeight/ib.naturalWidth;
+    w.style.height=Math.max(rA,rB)*width+'px';
+  }
+  let lc=0;
+  function onL(){lc++;if(lc>=2)fixH();}
+  if(ia.complete&&ia.naturalWidth)onL();else ia.addEventListener('load',onL);
+  if(ib.complete&&ib.naturalWidth)onL();else ib.addEventListener('load',onL);
   initBASlider(w);
 }
 
