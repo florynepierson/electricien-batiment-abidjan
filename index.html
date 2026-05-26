@@ -148,30 +148,46 @@ section{padding:120px 64px;position:relative;z-index:1;}
 /* BA SLIDER */
 .ba-wrap{position:relative;aspect-ratio:4/3;overflow:hidden;cursor:ew-resize;user-select:none;}
 .ba-after{width:100%;height:100%;object-fit:cover;display:block;filter:saturate(0.85) brightness(0.9);}
-.ba-before-clip{position:absolute;inset:0;clip-path:inset(0 50% 0 0);}
+.ba-before-clip{position:absolute;inset:0;clip-path:inset(0 50% 0 0);transition:clip-path 0.05s linear;}
 .ba-before-clip img{width:100%;height:100%;object-fit:cover;display:block;filter:saturate(0.6) brightness(0.75) sepia(0.1);}
-.ba-divider{position:absolute;top:0;bottom:0;left:50%;width:2px;background:var(--gold);transform:translateX(-50%);pointer-events:none;z-index:2;}
-.ba-handle{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:42px;height:42px;background:var(--gold);border-radius:50%;display:flex;align-items:center;justify-content:center;z-index:3;pointer-events:none;box-shadow:0 0 0 4px rgba(212,168,67,0.25);}
-.ba-handle svg{width:17px;height:17px;fill:var(--ink);}
+.ba-divider{position:absolute;top:0;bottom:0;left:50%;width:2px;background:var(--gold);transform:translateX(-50%);pointer-events:none;z-index:2;transition:left 0.05s linear;}
+.ba-handle{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:48px;height:48px;background:var(--gold);border-radius:50%;display:flex;align-items:center;justify-content:center;z-index:3;pointer-events:none;box-shadow:0 0 0 6px rgba(212,168,67,0.2),0 2px 12px rgba(0,0,0,0.4);transition:left 0.05s linear;}
+.ba-handle svg{width:20px;height:20px;fill:var(--ink);}
+/* hint arrows shown on load */
+.ba-hint{position:absolute;bottom:16px;left:50%;transform:translateX(-50%);z-index:4;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:rgba(212,168,67,0.7);display:flex;align-items:center;gap:6px;pointer-events:none;animation:hintFade 3s ease 1s forwards;}
+@keyframes hintFade{0%{opacity:1;}80%{opacity:1;}100%{opacity:0;}}
 .ba-badge{position:absolute;top:12px;z-index:2;font-size:10px;letter-spacing:2px;text-transform:uppercase;padding:4px 10px;backdrop-filter:blur(6px);}
 .ba-badge.avant{left:12px;background:rgba(8,11,10,0.75);color:var(--muted);}
 .ba-badge.apres{right:12px;background:rgba(212,168,67,0.2);color:var(--gold);}
 .ba-caption{padding:12px 0 4px;font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);font-weight:300;}
 
 /* GALERIE SIMPLE */
-.real-grid{display:grid;grid-template-columns:repeat(12,1fr);grid-template-rows:260px 260px;gap:4px;margin-top:4px;}
-.real-item{overflow:hidden;position:relative;cursor:pointer;}
-.real-item:nth-child(1){grid-column:span 5;}
-.real-item:nth-child(2){grid-column:span 4;}
-.real-item:nth-child(3){grid-column:span 3;}
-.real-item:nth-child(4){grid-column:span 4;}
-.real-item:nth-child(5){grid-column:span 4;}
-.real-item:nth-child(6){grid-column:span 4;}
-.real-item img{width:100%;height:100%;object-fit:cover;transition:transform 0.7s ease,filter 0.5s ease;filter:saturate(0.6) brightness(0.8);}
-.real-item:hover img{transform:scale(1.06);filter:saturate(1) brightness(0.7);}
+.real-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-top:4px;}
+.real-item{overflow:hidden;position:relative;cursor:pointer;background:var(--card);}
+/* chaque item affiche l'image en entier (contain) avec fond sombre */
+.real-item img{width:100%;height:100%;object-fit:contain;display:block;transition:transform 0.5s ease,filter 0.5s ease;filter:brightness(0.92);}
+.real-item:hover img{transform:scale(1.03);filter:brightness(1);}
 .real-label{position:absolute;bottom:0;left:0;right:0;padding:24px 16px 14px;background:linear-gradient(to top,rgba(8,11,10,0.9),transparent);color:var(--white);font-size:10px;letter-spacing:2px;text-transform:uppercase;font-weight:400;opacity:0;transform:translateY(8px);transition:all 0.4s;}
 .real-label::before{content:'⚡ ';color:var(--gold);}
 .real-item:hover .real-label{opacity:1;transform:translateY(0);}
+/* zoom icon overlay */
+.real-zoom{position:absolute;top:12px;right:12px;width:32px;height:32px;background:rgba(212,168,67,0.15);border:1px solid rgba(212,168,67,0.3);border-radius:50%;display:flex;align-items:center;justify-content:center;opacity:0;transition:opacity 0.3s;color:var(--gold);font-size:14px;}
+.real-item:hover .real-zoom{opacity:1;}
+
+/* LIGHTBOX */
+.lightbox{position:fixed;inset:0;z-index:2000;background:rgba(5,8,7,0.97);display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity 0.35s ease;}
+.lightbox.open{opacity:1;pointer-events:all;}
+.lb-img-wrap{position:relative;max-width:90vw;max-height:88vh;display:flex;align-items:center;justify-content:center;}
+.lb-img{max-width:90vw;max-height:85vh;object-fit:contain;display:block;transition:opacity 0.25s ease,transform 0.25s ease;}
+.lb-img.fade{opacity:0;transform:scale(0.97);}
+.lb-close{position:fixed;top:24px;right:28px;width:44px;height:44px;background:rgba(212,168,67,0.1);border:1px solid rgba(212,168,67,0.25);border-radius:50%;color:var(--gold);font-size:22px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background 0.3s;}
+.lb-close:hover{background:rgba(212,168,67,0.25);}
+.lb-arrow{position:fixed;top:50%;transform:translateY(-50%);width:52px;height:52px;background:rgba(212,168,67,0.1);border:1px solid rgba(212,168,67,0.25);color:var(--gold);font-size:24px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background 0.3s;}
+.lb-arrow:hover{background:rgba(212,168,67,0.25);}
+.lb-prev{left:20px;}
+.lb-next{right:20px;}
+.lb-caption{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);font-size:11px;letter-spacing:3px;text-transform:uppercase;color:var(--muted);text-align:center;white-space:nowrap;}
+.lb-counter{position:fixed;top:28px;left:50%;transform:translateX(-50%);font-size:11px;letter-spacing:3px;color:var(--muted);}
 
 /* AVIS */
 #avis{background:var(--deep);overflow:hidden;}
@@ -319,7 +335,7 @@ footer{background:var(--panel);padding:72px 64px 36px;border-top:1px solid var(-
   .contact-band{padding:40px 20px;}
   .ba-grid{grid-template-columns:1fr;}
   .ba-grid > *:last-child{display:block;}
-  .real-grid{grid-template-columns:1fr 1fr;grid-template-rows:repeat(3,180px);gap:4px;}
+  .real-grid{grid-template-columns:1fr 1fr;gap:4px;}
   .real-item:nth-child(n){grid-column:span 1;}
   .real-label{opacity:1;transform:translateY(0);font-size:9px;}
   .zones-grid{grid-template-columns:1fr;}
@@ -334,8 +350,7 @@ footer{background:var(--panel);padding:72px 64px 36px;border-top:1px solid var(-
 }
 @media(max-width:480px){
   .ba-grid{grid-template-columns:1fr;}
-  .real-grid{grid-template-columns:1fr;grid-template-rows:auto;}
-  .real-item{height:200px;}
+  .real-grid{grid-template-columns:1fr;}
   .btn-gold{clip-path:none;}
 }
 </style>
@@ -534,29 +549,35 @@ footer{background:var(--panel);padding:72px 64px 36px;border-top:1px solid var(-
   <!-- GALERIE -->
   <div class="ba-section-title reveal" style="margin-top:64px;">Galerie réalisations</div>
   <div class="real-grid reveal">
-    <div class="real-item">
+  <div class="real-item" data-index="0">
       <img src="images/plafond.jpg" alt="Plafond lumineux" loading="lazy">
       <div class="real-label">Plafond lumineux</div>
+      <div class="real-zoom">⤢</div>
     </div>
-    <div class="real-item">
+    <div class="real-item" data-index="1">
       <img src="images/escalier.jpg" alt="Éclairage escalier" loading="lazy">
       <div class="real-label">Escalier éclairé</div>
+      <div class="real-zoom">⤢</div>
     </div>
-    <div class="real-item">
+    <div class="real-item" data-index="2">
       <img src="images/lustre.jpg" alt="Lustre" loading="lazy">
       <div class="real-label">Lustre</div>
+      <div class="real-zoom">⤢</div>
     </div>
-    <div class="real-item">
+    <div class="real-item" data-index="3">
       <img src="images/plafond octogones.jpg" alt="Plafond octogones" loading="lazy">
       <div class="real-label">Plafond octogones</div>
+      <div class="real-zoom">⤢</div>
     </div>
-    <div class="real-item">
+    <div class="real-item" data-index="4">
       <img src="images/plafond rectangle.jpg" alt="Plafond rectangle" loading="lazy">
       <div class="real-label">Plafond rectangle</div>
+      <div class="real-zoom">⤢</div>
     </div>
-    <div class="real-item">
+    <div class="real-item" data-index="5">
       <img src="images/concept-store.jpg" alt="Concept store" loading="lazy">
       <div class="real-label">Concept store</div>
+      <div class="real-zoom">⤢</div>
     </div>
   </div>
 </section>
@@ -813,6 +834,18 @@ footer{background:var(--panel);padding:72px 64px 36px;border-top:1px solid var(-
   </div>
 </footer>
 
+<!-- LIGHTBOX -->
+<div class="lightbox" id="lightbox" role="dialog" aria-modal="true">
+  <button class="lb-close" id="lbClose" aria-label="Fermer">✕</button>
+  <button class="lb-arrow lb-prev" id="lbPrev" aria-label="Précédent">‹</button>
+  <button class="lb-arrow lb-next" id="lbNext" aria-label="Suivant">›</button>
+  <div class="lb-img-wrap">
+    <img class="lb-img" id="lbImg" src="" alt="">
+  </div>
+  <div class="lb-caption" id="lbCaption"></div>
+  <div class="lb-counter" id="lbCounter"></div>
+</div>
+
 <script>
 // NAV SCROLL
 window.addEventListener('scroll',()=>{
@@ -851,25 +884,94 @@ window.addEventListener('scroll',()=>{
   if(hbg)hbg.style.transform=`translateY(${y*0.25}px)`;
 });
 
-// BEFORE/AFTER SLIDERS
+// BEFORE/AFTER SLIDERS — smooth lerp
 document.querySelectorAll('[data-ba]').forEach(wrapper=>{
   const clip=wrapper.querySelector('.ba-before-clip');
   const divider=wrapper.querySelector('.ba-divider');
   const handle=wrapper.querySelector('.ba-handle');
-  let dragging=false;
-  function setPos(x){
-    const rect=wrapper.getBoundingClientRect();
-    const pct=Math.max(0,Math.min(1,(x-rect.left)/rect.width));
-    clip.style.clipPath=`inset(0 ${(100-pct*100).toFixed(1)}% 0 0)`;
-    divider.style.left=`${(pct*100).toFixed(1)}%`;
-    handle.style.left=`${(pct*100).toFixed(1)}%`;
+  let target=0.5, current=0.5, dragging=false, rafId=null;
+
+  function applyPos(p){
+    const pStr=(p*100).toFixed(2)+'%';
+    clip.style.clipPath=`inset(0 ${(100-p*100).toFixed(2)}% 0 0)`;
+    divider.style.left=pStr;
+    handle.style.left=pStr;
   }
-  wrapper.addEventListener('mousedown',e=>{dragging=true;setPos(e.clientX);});
-  window.addEventListener('mousemove',e=>{if(dragging)setPos(e.clientX);});
+  applyPos(0.5);
+
+  function lerp(a,b,t){return a+(b-a)*t;}
+  function animate(){
+    current=lerp(current,target,0.12);
+    applyPos(current);
+    if(Math.abs(current-target)>0.0005) rafId=requestAnimationFrame(animate);
+    else{applyPos(target);rafId=null;}
+  }
+  function startAnim(){if(!rafId)rafId=requestAnimationFrame(animate);}
+
+  function getPos(x){
+    const rect=wrapper.getBoundingClientRect();
+    return Math.max(0,Math.min(1,(x-rect.left)/rect.width));
+  }
+  wrapper.addEventListener('mousedown',e=>{e.preventDefault();dragging=true;target=getPos(e.clientX);startAnim();});
+  window.addEventListener('mousemove',e=>{if(dragging){target=getPos(e.clientX);startAnim();}});
   window.addEventListener('mouseup',()=>{dragging=false;});
-  wrapper.addEventListener('touchstart',e=>{dragging=true;setPos(e.touches[0].clientX);},{passive:true});
-  window.addEventListener('touchmove',e=>{if(dragging)setPos(e.touches[0].clientX);},{passive:true});
+  wrapper.addEventListener('touchstart',e=>{dragging=true;target=getPos(e.touches[0].clientX);startAnim();},{passive:true});
+  window.addEventListener('touchmove',e=>{if(dragging){target=getPos(e.touches[0].clientX);startAnim();}},{passive:true});
   window.addEventListener('touchend',()=>{dragging=false;});
+});
+
+// LIGHTBOX
+const galleryImages=[
+  {src:'images/plafond.jpg',label:'Plafond lumineux'},
+  {src:'images/escalier.jpg',label:'Escalier éclairé'},
+  {src:'images/lustre.jpg',label:'Lustre'},
+  {src:'images/plafond octogones.jpg',label:'Plafond octogones'},
+  {src:'images/plafond rectangle.jpg',label:'Plafond rectangle'},
+  {src:'images/concept-store.jpg',label:'Concept store'},
+];
+const lightbox=document.getElementById('lightbox');
+const lbImg=document.getElementById('lbImg');
+const lbCaption=document.getElementById('lbCaption');
+const lbCounter=document.getElementById('lbCounter');
+let lbCurrent=0;
+
+function lbOpen(idx){
+  lbCurrent=idx;
+  lbImg.src=galleryImages[idx].src;
+  lbImg.alt=galleryImages[idx].label;
+  lbCaption.textContent=galleryImages[idx].label;
+  lbCounter.textContent=(idx+1)+' / '+galleryImages.length;
+  lightbox.classList.add('open');
+  document.body.style.overflow='hidden';
+}
+function lbClose(){
+  lightbox.classList.remove('open');
+  document.body.style.overflow='';
+}
+function lbGo(dir){
+  lbImg.classList.add('fade');
+  setTimeout(()=>{
+    lbCurrent=(lbCurrent+dir+galleryImages.length)%galleryImages.length;
+    lbImg.src=galleryImages[lbCurrent].src;
+    lbImg.alt=galleryImages[lbCurrent].label;
+    lbCaption.textContent=galleryImages[lbCurrent].label;
+    lbCounter.textContent=(lbCurrent+1)+' / '+galleryImages.length;
+    lbImg.classList.remove('fade');
+  },220);
+}
+
+document.querySelectorAll('.real-item').forEach(el=>{
+  el.addEventListener('click',()=>lbOpen(+el.dataset.index));
+});
+document.getElementById('lbClose').addEventListener('click',lbClose);
+document.getElementById('lbPrev').addEventListener('click',()=>lbGo(-1));
+document.getElementById('lbNext').addEventListener('click',()=>lbGo(1));
+lightbox.addEventListener('click',e=>{if(e.target===lightbox)lbClose();});
+document.addEventListener('keydown',e=>{
+  if(!lightbox.classList.contains('open'))return;
+  if(e.key==='Escape')lbClose();
+  if(e.key==='ArrowLeft')lbGo(-1);
+  if(e.key==='ArrowRight')lbGo(1);
 });
 
 // CONTACT FORM → WHATSAPP
