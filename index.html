@@ -140,13 +140,13 @@ section{padding:120px 64px;position:relative;z-index:1;}
 #realisations{background:var(--ink);}
 .real-intro{display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:60px;}
 
-/* AVANT/APRÈS — colonne unique, centré, taille compacte */
+/* AVANT/APRÈS */
 .ba-section-title{font-family:'Bebas Neue',sans-serif;font-size:18px;letter-spacing:3px;color:var(--muted);margin-bottom:1.5rem;display:flex;align-items:center;gap:12px;}
 .ba-section-title::after{content:'';flex:1;height:1px;background:var(--line);}
-.ba-grid{display:flex;flex-direction:column;gap:24px;margin-bottom:4px;align-items:center;}
+.ba-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:28px;margin-bottom:4px;}
 
-/* chaque item BA : centré, taille modérée */
-.ba-item{width:100%;max-width:520px;}
+/* chaque item BA : pleine largeur de sa colonne */
+.ba-item{width:100%;}
 
 /* BA SLIDER — aucun crop */
 .ba-wrap{
@@ -400,7 +400,6 @@ footer{background:var(--panel);padding:72px 64px 36px;border-top:1px solid var(-
   .foot-grid{grid-template-columns:1fr 1fr;gap:40px;}
   footer{padding:60px 40px 30px;}
   .services-grid{grid-template-columns:repeat(2,1fr);}
-  .ba-grid{grid-template-columns:1fr;}
 }
 @media(max-width:900px){
   .services-head{grid-template-columns:1fr;gap:20px;margin-bottom:44px;}
@@ -663,8 +662,8 @@ footer{background:var(--panel);padding:72px 64px 36px;border-top:1px solid var(-
 
     <div class="ba-item">
       <div class="ba-wrap" data-ba data-ba-index="4">
-        <img class="ba-before-clip" src="images/plafond-contemporain-travaux.jpg" alt="Plafond contemporain en travaux" />
-        <div class="ba-after"><img src="images/plafond-contemporain.jpg" alt="Plafond contemporain après" /></div>
+        <img class="ba-before-clip" src="images/plafond-contemporain.jpg" alt="Plafond contemporain en travaux" />
+        <div class="ba-after"><img src="images/plafond-contemporain-travaux.jpg" alt="Plafond contemporain après" /></div>
         <div class="ba-divider"></div>
         <div class="ba-handle"><svg viewBox="0 0 24 24"><path d="M8 5l-7 7 7 7V5zm8 0v14l7-7-7-7z"/></svg></div>
         <span class="ba-badge avant">Travaux</span>
